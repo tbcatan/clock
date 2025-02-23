@@ -2,6 +2,15 @@ const messageServer = "https://messages-lwz6.onrender.com";
 
 const messageStream = new EventSource(`${messageServer}/messages`);
 
+const getMessageSnapshots = () =>
+  fetch(`${messageServer}/messages/snapshot`).then((response) => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      return Promise.reject(response);
+    }
+  });
+
 const sendMessage = (key, version, message) =>
   fetch(`${messageServer}/message/${key}/${version}`, {
     method: "POST",
@@ -11,7 +20,7 @@ const sendMessage = (key, version, message) =>
     if (response.ok) {
       return response;
     } else {
-      throw response;
+      return Promise.reject(response);
     }
   });
 
@@ -21,9 +30,12 @@ const message = (() => {
   const messageListeners = new Map();
 
   const updateMessage = (key, version, data) => {
-    messageStates.set(key, data);
-    messageVersions.set(key, version);
-    messageListeners.get(key)?.forEach((listener) => listener());
+    const currentVersion = messageVersions.get(key);
+    if (currentVersion == undefined || version > currentVersion) {
+      messageStates.set(key, data);
+      messageVersions.set(key, version);
+      messageListeners.get(key)?.forEach((listener) => listener());
+    }
   };
 
   messageStream.addEventListener("message", (event) => {
@@ -32,17 +44,17 @@ const message = (() => {
     updateMessage(id.key, id.version, data);
   });
 
+  const initSnapshots = getMessageSnapshots().then((snapshots) =>
+    snapshots?.forEach((snapshot) => updateMessage(snapshot.id.key, snapshot.id.version, snapshot.data))
+  );
+
   return (key) => {
-    const state = () => messageStates.get(key) ?? null;
-    const version = () => messageVersions.get(key) ?? 0;
+    const state = () => messageStates.get(key);
+    const version = () => messageVersions.get(key);
 
     const subscribe = (subscriber) => {
-      let lastVersion = 0;
       const listener = () => {
-        if (version() > lastVersion) {
-          lastVersion = version();
-          queueMicrotask(() => subscriber(state(), version()));
-        }
+        queueMicrotask(() => subscriber(state(), version()));
       };
 
       if (!messageListeners.has(key)) {
@@ -56,14 +68,17 @@ const message = (() => {
       };
     };
 
-    const send = (data) => {
+    const publish = async (data) => {
       const nextVersion = version() + 1;
-      return sendMessage(key, nextVersion, data).then((response) => {
-        updateMessage(key, nextVersion, data);
-        return response;
-      });
+      const response = await sendMessage(key, nextVersion, data);
+      updateMessage(key, nextVersion, data);
+      return response;
     };
 
-    return { key, state, version, subscribe, send };
+    const init = async () => {
+      await initSnapshots;
+    };
+
+    return { key, state, version, subscribe, publish, init };
   };
 })();
