@@ -44,8 +44,10 @@ const message = (() => {
     updateMessage(id.key, id.version, data);
   });
 
-  const initSnapshots = getMessageSnapshots().then((snapshots) =>
-    snapshots?.forEach((snapshot) => updateMessage(snapshot.id.key, snapshot.id.version, snapshot.data))
+  const initSnapshots = retry(() =>
+    getMessageSnapshots().then((snapshots) =>
+      snapshots?.forEach((snapshot) => updateMessage(snapshot.id.key, snapshot.id.version, snapshot.data))
+    )
   );
 
   return (key) => {
