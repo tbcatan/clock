@@ -20,22 +20,30 @@ const message = (() => {
   const messageVersions = new Map();
   const messageListeners = new Map();
 
+  const updateMessage = (key, version, data) => {
+    messageStates.set(key, data);
+    messageVersions.set(key, version);
+    messageListeners.get(key)?.forEach((listener) => listener());
+  };
+
   messageStream.addEventListener("message", (event) => {
     const id = JSON.parse(event.lastEventId);
     const data = JSON.parse(event.data);
-    messageStates.set(id.key, data);
-    messageVersions.set(id.key, id.version);
-    messageListeners.get(id.key)?.forEach((listener) => listener());
+    updateMessage(id.key, id.version, data);
   });
 
   return (key) => {
-    const state = () => messageStates.get(key);
-    const version = () => messageVersions.get(key);
+    const state = () => messageStates.get(key) ?? null;
+    const version = () => messageVersions.get(key) ?? 0;
 
     const subscribe = (subscriber) => {
+      let lastVersion = 0;
       const listener = () => {
         try {
-          subscriber(state(), version());
+          if (version() > lastVersion) {
+            lastVersion = version();
+            subscriber(state(), version());
+          }
         } catch (e) {
           console.error(e);
         }
@@ -45,17 +53,20 @@ const message = (() => {
         messageListeners.set(key, new Set());
       }
       messageListeners.get(key).add(listener);
-
-      if (messageStates.has(key)) {
-        listener();
-      }
+      listener();
 
       return {
         unsubscribe: () => messageListeners.get(key).delete(listener),
       };
     };
 
-    const send = (data) => sendMessage(key, (version() ?? 0) + 1, data);
+    const send = (data) => {
+      const nextVersion = version() + 1;
+      return sendMessage(key, nextVersion, data).then((response) => {
+        updateMessage(key, nextVersion, data);
+        return response;
+      });
+    };
 
     return { key, state, version, subscribe, send };
   };
