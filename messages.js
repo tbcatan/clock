@@ -39,13 +39,9 @@ const message = (() => {
     const subscribe = (subscriber) => {
       let lastVersion = 0;
       const listener = () => {
-        try {
-          if (version() > lastVersion) {
-            lastVersion = version();
-            subscriber(state(), version());
-          }
-        } catch (e) {
-          console.error(e);
+        if (version() > lastVersion) {
+          lastVersion = version();
+          queueMicrotask(() => subscriber(state(), version()));
         }
       };
 
