@@ -9,8 +9,13 @@ const retry = (request, options) => {
 
   let attempt = 0;
   const retryRequest = () =>
-    request().catch((e) =>
-      attempt < maxRetries && condition(e) ? sleep(wait(attempt++)).then(retryRequest) : Promise.reject(e)
-    );
+    request().catch((e) => {
+      if (attempt < maxRetries && condition(e)) {
+        console.error(e);
+        return sleep(wait(attempt++)).then(retryRequest);
+      } else {
+        return Promise.reject(e);
+      }
+    });
   return retryRequest();
 };
