@@ -28,6 +28,10 @@ body {
   border-radius: 6px;
   padding: 18px 36px;
 
+  &.paused {
+    background-color: goldenrod;
+  }
+
   &.running {
     background-color: crimson;
   }

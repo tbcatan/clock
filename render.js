@@ -19,16 +19,21 @@ function renderClocks(clockState) {
   document.querySelector("#clocks").replaceChildren(
     ...clockState.clocks.map((clock, index) => {
       const running = index === clockState.running;
+      const paused = index === clockState.paused;
+      const name = clock.name;
       const time = running ? clock.time - elapsed : clock.time;
-      return createClock(clock.name, time, running);
+      return createClock({ name, time, running, paused });
     })
   );
 }
 
-function createClock(name, time, running) {
+function createClock({ name, time, running, paused }) {
   const clock = document.querySelector("#clock").content.cloneNode(true);
   if (running) {
     clock.querySelector(".clock").classList.add("running");
+  }
+  if (paused) {
+    clock.querySelector(".clock").classList.add("paused");
   }
   clock.querySelector(".name").textContent = name;
 
