@@ -1,6 +1,35 @@
 const messageServer = "https://messages-lwz6.onrender.com";
 
-const messageStream = new EventSource(`${messageServer}/messages`);
+const messageStream = (() => {
+  const listeners = new Set();
+  const addListener = (listener) => listeners.add(listener);
+  const removeListener = (listener) => listeners.remove(listener);
+
+  let eventSource;
+  const reload = () => {
+    eventSource?.close();
+    eventSource = new EventSource(`${messageServer}/messages`);
+    eventSource.addEventListener("message", (event) =>
+      listeners.forEach((listener) => {
+        try {
+          listener(event);
+        } catch (e) {
+          console.error(e);
+        }
+      })
+    );
+  };
+  const close = () => eventSource?.close();
+
+  reload();
+  return { addListener, removeListener, reload, close };
+})();
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    messageStream.reload();
+  }
+});
 
 const getMessageSnapshots = () =>
   fetch(`${messageServer}/messages/snapshot`).then((response) => {
@@ -38,7 +67,7 @@ const message = (() => {
     }
   };
 
-  messageStream.addEventListener("message", (event) => {
+  messageStream.addListener((event) => {
     const id = JSON.parse(event.lastEventId);
     const data = JSON.parse(event.data);
     updateMessage(id.key, id.version, data);
