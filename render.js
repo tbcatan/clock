@@ -1,7 +1,7 @@
-function renderLoop(clockStateGetter) {
+function renderLoop(getClockState, publishClockState) {
   let loop = () => {
     try {
-      renderClocks(clockStateGetter());
+      renderClocks(getClockState(), publishClockState);
     } finally {
       requestAnimationFrame(loop);
     }
@@ -14,7 +14,7 @@ function renderLoop(clockStateGetter) {
   };
 }
 
-function renderClocks(clockState) {
+function renderClocks(clockState, publishClockState) {
   const elapsed = Math.max(Date.now() - clockState.timestamp, 0);
   document.querySelector("#clocks").replaceChildren(
     ...clockState.clocks.map((clock, index) => {
@@ -22,18 +22,22 @@ function renderClocks(clockState) {
       const paused = index === clockState.paused;
       const name = clock.name;
       const time = running ? clock.time - elapsed : clock.time;
-      return createClock({ name, time, running, paused });
+      const click = running ? () => publishClockState(nextClock(clockState)) : null;
+      return createClock({ name, time, running, paused, click });
     })
   );
 }
 
-function createClock({ name, time, running, paused }) {
-  const clock = document.querySelector("#clock").content.cloneNode(true);
+function createClock({ name, time, running, paused, click }) {
+  const clock = document.querySelector("#clock").content.cloneNode(true).querySelector(".clock");
   if (running) {
-    clock.querySelector(".clock").classList.add("running");
+    clock.classList.add("running");
   }
   if (paused) {
-    clock.querySelector(".clock").classList.add("paused");
+    clock.classList.add("paused");
+  }
+  if (click) {
+    clock.addEventListener("click", click);
   }
   clock.querySelector(".name").textContent = name;
 

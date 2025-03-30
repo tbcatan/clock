@@ -57,5 +57,9 @@ body {
 
   &.running {
     background-color: crimson;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
