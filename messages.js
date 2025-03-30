@@ -51,8 +51,8 @@ const message = (() => {
   );
 
   return (key) => {
-    const state = () => messageStates.get(key);
-    const version = () => messageVersions.get(key);
+    const state = () => messageStates.get(key) ?? null;
+    const version = () => messageVersions.get(key) ?? 0;
 
     const subscribe = (subscriber) => {
       const listener = () => {
