@@ -12,12 +12,12 @@ function renderLoop(getClockState, publishClockState) {
         );
       }
     } finally {
-      requestAnimationFrame(loop);
+      requestAnimationFrame(() => loop());
     }
   };
+  requestAnimationFrame(() => loop());
   return {
-    start: () => loop(),
-    stop: () => {
+    close: () => {
       loop = () => {};
     },
   };
