@@ -50,7 +50,12 @@ function createClock(name, time, running) {
   time = Math.abs(time);
 
   const milliseconds = time % 1000;
-  const millisecondString = time < 10 * 1000 ? `.${milliseconds.toFixed(2)}` : "";
+  const millisecondString =
+    time < 10 * 1000
+      ? `.${Math.floor(milliseconds / 10)
+          .toFixed(0)
+          .padStart(2, "0")}`
+      : "";
 
   time = (time - milliseconds) / 1000;
   const seconds = time % 60;
