@@ -15,8 +15,13 @@ body {
   row-gap: 24px;
   column-gap: 48px;
 
-  width: 250px;
+  width: 300px;
   min-width: fit-content;
+  max-width: 100%;
+
+  .clock .time {
+    justify-self: end;
+  }
 }
 
 .clock {
@@ -27,6 +32,8 @@ body {
   border: 1px solid white;
   border-radius: 6px;
   padding: 18px 36px;
+
+  white-space: nowrap;
 
   &.paused {
     background-color: goldenrod;
