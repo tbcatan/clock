@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>Catan Clock</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <script src="utils.js"></script>
@@ -15,8 +16,18 @@
     renderLoop(clock.state, clock.publish);
   </script>
   <body>
-    <div class="content">
-      <div id="clocks"></div>
+    <div class="center">
+      <div class="content">
+        <div id="clocks"></div>
+        <div class="controls">
+          <button id="play-button" onclick="clock.publish(resumeClock(clock.state()))">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <button id="pause-button" onclick="clock.publish(pauseClock(clock.state()))">
+            <i class="fa-solid fa-pause"></i>
+          </button>
+        </div>
+      </div>
     </div>
     <template id="clock">
       <div class="clock">

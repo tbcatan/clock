@@ -10,6 +10,7 @@ html {
 body {
   font-size: 24px;
   font-family: sans-serif;
+
   color: white;
   background-color: black;
 
@@ -21,7 +22,7 @@ body {
   padding: 12px;
 }
 
-.content {
+.center {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,6 +31,12 @@ body {
   height: 100%;
   min-width: fit-content;
   min-height: fit-content;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
 }
 
 #clocks {
@@ -67,5 +74,28 @@ body {
     &:hover {
       cursor: pointer;
     }
+  }
+}
+
+.controls {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+button {
+  font-size: inherit;
+  font-family: inherit;
+
+  color: inherit;
+  background: none;
+
+  border: 1px solid white;
+  border-radius: 6px;
+
+  padding: 12px 18px;
+
+  &:hover {
+    cursor: pointer;
   }
 }
