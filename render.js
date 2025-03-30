@@ -38,8 +38,9 @@ const renderClocks = (clockState, publishClockState) => {
   } else {
     document.querySelector("#clocks").replaceChildren();
   }
-  const running = clockState.running != null;
-  document.querySelector("#play-button").style.display = running ? "none" : "inline-block";
+  const running = clockState?.running != null;
+  document.querySelector("#play-button").style.display =
+    !running && clockState?.clocks?.length > 0 ? "inline-block" : "none";
   document.querySelector("#pause-button").style.display = running ? "inline-block" : "none";
 };
 
