@@ -24,20 +24,23 @@ const renderLoop = (getClockState, publishClockState) => {
 };
 
 const renderClocks = (clockState, publishClockState) => {
-  if (!clockState) {
+  if (clockState) {
+    document.querySelector("#clocks").replaceChildren(
+      ...clockState.clocks.map((clock, index) => {
+        const running = index === clockState.running;
+        const paused = index === clockState.paused;
+        const name = clock.name;
+        const time = running ? runningClockTime(clock.time, clockState.timestamp) : clock.time;
+        const click = running ? () => publishClockState(nextClock(clockState)) : null;
+        return createClock({ name, time, running, paused, click });
+      })
+    );
+  } else {
     document.querySelector("#clocks").replaceChildren();
-    return;
   }
-  document.querySelector("#clocks").replaceChildren(
-    ...clockState.clocks.map((clock, index) => {
-      const running = index === clockState.running;
-      const paused = index === clockState.paused;
-      const name = clock.name;
-      const time = running ? runningClockTime(clock.time, clockState.timestamp) : clock.time;
-      const click = running ? () => publishClockState(nextClock(clockState)) : null;
-      return createClock({ name, time, running, paused, click });
-    })
-  );
+  const running = clockState.running != null;
+  document.querySelector("#play-button").style.display = running ? "none" : "inline-block";
+  document.querySelector("#pause-button").style.display = running ? "inline-block" : "none";
 };
 
 const createClock = ({ name, time, running, paused, click }) => {

@@ -20,11 +20,16 @@
       <div class="content">
         <div id="clocks"></div>
         <div class="controls">
-          <button id="play-button" onclick="clock.publish(resumeClock(clock.state()))">
-            <i class="fa-solid fa-play"></i>
-          </button>
-          <button id="pause-button" onclick="clock.publish(pauseClock(clock.state()))">
-            <i class="fa-solid fa-pause"></i>
+          <div>
+            <button id="play-button" onclick="clock.publish(resumeClock(clock.state()))">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <button id="pause-button" onclick="clock.publish(pauseClock(clock.state()))">
+              <i class="fa-solid fa-pause"></i>
+            </button>
+          </div>
+          <button id="edit-button">
+            <i class="fa-solid fa-pen-to-square"></i>
           </button>
         </div>
       </div>
