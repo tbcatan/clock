@@ -1,7 +1,16 @@
 function renderLoop(getClockState, publishClockState) {
+  let clockState = null;
   let loop = () => {
     try {
-      renderClocks(getClockState(), publishClockState);
+      const newClockState = getClockState();
+      if (newClockState !== clockState) {
+        renderClocks(newClockState, publishClockState);
+        clockState = newClockState;
+      } else if (clockState?.running != null) {
+        document.querySelector("#clocks").children[clockState.running].querySelector(".time").textContent = formatTime(
+          runningClockTime(clockState.clocks[clockState.running].time, clockState.timestamp)
+        );
+      }
     } finally {
       requestAnimationFrame(loop);
     }
@@ -15,13 +24,16 @@ function renderLoop(getClockState, publishClockState) {
 }
 
 function renderClocks(clockState, publishClockState) {
-  const elapsed = Math.max(Date.now() - clockState.timestamp, 0);
+  if (!clockState) {
+    document.querySelector("#clocks").replaceChildren();
+    return;
+  }
   document.querySelector("#clocks").replaceChildren(
     ...clockState.clocks.map((clock, index) => {
       const running = index === clockState.running;
       const paused = index === clockState.paused;
       const name = clock.name;
-      const time = running ? clock.time - elapsed : clock.time;
+      const time = running ? runningClockTime(clock.time, clockState.timestamp) : clock.time;
       const click = running ? () => publishClockState(nextClock(clockState)) : null;
       return createClock({ name, time, running, paused, click });
     })
@@ -40,7 +52,15 @@ function createClock({ name, time, running, paused, click }) {
     clock.addEventListener("click", click);
   }
   clock.querySelector(".name").textContent = name;
+  clock.querySelector(".time").textContent = formatTime(time);
+  return clock;
+}
 
+function runningClockTime(time, asOfTimestamp) {
+  return time - Math.max(Date.now() - asOfTimestamp, 0);
+}
+
+function formatTime(time) {
   const signString = time < 0 ? "-" : "";
   time = Math.abs(time);
 
@@ -64,7 +84,5 @@ function createClock({ name, time, running, paused, click }) {
   const hours = time;
   const hourString = time >= 0.5 ? `${hours.toFixed(0).padStart(2, "0")}:` : "";
 
-  const timeStr = `${signString}${hourString}${minuteString}${secondString}${millisecondString}`;
-  clock.querySelector(".time").textContent = timeStr;
-  return clock;
+  return `${signString}${hourString}${minuteString}${secondString}${millisecondString}`;
 }
