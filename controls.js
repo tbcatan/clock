@@ -1,7 +1,7 @@
 function nextClock(clockState) {
   return {
     ...updateClockState(clockState),
-    running: (clockState.running + 1) % clockState.clocks.length || 0,
+    running: (clockState.running != null && (clockState.running + 1) % clockState.clocks.length) || 0,
     paused: undefined,
   };
 }
@@ -17,7 +17,7 @@ function pauseClock(clockState) {
 function resumeClock(clockState) {
   return {
     ...updateClockState(clockState),
-    running: clockState.running ?? clockState.paused,
+    running: (clockState.running ?? clockState.paused) || 0,
     paused: undefined,
   };
 }
