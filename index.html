@@ -9,6 +9,10 @@
   <script src="messages.js"></script>
   <script src="controls.js"></script>
   <script src="render.js"></script>
+  <script>
+    const clock = message("clock");
+    renderLoop(clock.state, clock.publish);
+  </script>
   <body>
     <div class="content">
       <div id="clocks"></div>
