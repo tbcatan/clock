@@ -1,4 +1,4 @@
-function renderLoop(getClockState, publishClockState) {
+const renderLoop = (getClockState, publishClockState) => {
   let clockState = null;
   let loop = () => {
     try {
@@ -21,9 +21,9 @@ function renderLoop(getClockState, publishClockState) {
       loop = () => {};
     },
   };
-}
+};
 
-function renderClocks(clockState, publishClockState) {
+const renderClocks = (clockState, publishClockState) => {
   if (!clockState) {
     document.querySelector("#clocks").replaceChildren();
     return;
@@ -38,9 +38,9 @@ function renderClocks(clockState, publishClockState) {
       return createClock({ name, time, running, paused, click });
     })
   );
-}
+};
 
-function createClock({ name, time, running, paused, click }) {
+const createClock = ({ name, time, running, paused, click }) => {
   const clock = document.querySelector("#clock").content.cloneNode(true).querySelector(".clock");
   if (running) {
     clock.classList.add("running");
@@ -54,13 +54,13 @@ function createClock({ name, time, running, paused, click }) {
   clock.querySelector(".name").textContent = name;
   clock.querySelector(".time").textContent = formatTime(time);
   return clock;
-}
+};
 
-function runningClockTime(time, asOfTimestamp) {
+const runningClockTime = (time, asOfTimestamp) => {
   return time - Math.max(Date.now() - asOfTimestamp, 0);
-}
+};
 
-function formatTime(time) {
+const formatTime = (time) => {
   const signString = time < 0 ? "-" : "";
   time = Math.abs(time);
 
@@ -85,4 +85,4 @@ function formatTime(time) {
   const hourString = time >= 0.5 ? `${hours.toFixed(0).padStart(2, "0")}:` : "";
 
   return `${signString}${hourString}${minuteString}${secondString}${millisecondString}`;
-}
+};
