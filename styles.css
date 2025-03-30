@@ -11,7 +11,7 @@ body {
 
 #clocks {
   display: grid;
-  grid-template-columns: repeat(2, min-content);
+  grid-template-columns: 1fr min-content;
   row-gap: 24px;
   column-gap: 48px;
 
