@@ -21,26 +21,29 @@
     <div class="center">
       <div class="content">
         <div id="clocks"></div>
-        <div class="controls">
-          <div>
-            <button id="play-button" onclick="clock.publish(resumeClock(clock.state()))" style="display: none">
-              <i class="fa-solid fa-play"></i>
-            </button>
-            <button id="pause-button" onclick="clock.publish(pauseClock(clock.state()))" style="display: none">
-              <i class="fa-solid fa-pause"></i>
-            </button>
-          </div>
-          <button id="edit-button">
-            <i class="fa-solid fa-pen-to-square"></i>
-          </button>
-        </div>
+        <div id="controls"></div>
       </div>
     </div>
-    <template id="clock">
-      <div class="clock">
-        <div class="name"></div>
-        <div class="time"></div>
-      </div>
-    </template>
   </body>
+  <template id="clock">
+    <div class="clock">
+      <div class="name"></div>
+      <div class="time"></div>
+    </div>
+  </template>
+  <template id="play-button">
+    <button onclick="clock.publish(resumeClock(clock.state()))">
+      <i class="fa-solid fa-play"></i>
+    </button>
+  </template>
+  <template id="pause-button">
+    <button onclick="clock.publish(pauseClock(clock.state()))">
+      <i class="fa-solid fa-pause"></i>
+    </button>
+  </template>
+  <template id="edit-button">
+    <button>
+      <i class="fa-solid fa-pen-to-square"></i>
+    </button>
+  </template>
 </html>

@@ -1,5 +1,5 @@
 const renderLoop = (getClockState, publishClockState) => {
-  let clockState = null;
+  let clockState;
   let loop = () => {
     try {
       const newClockState = getClockState();
@@ -38,10 +38,15 @@ const renderClocks = (clockState, publishClockState) => {
   } else {
     document.querySelector("#clocks").replaceChildren();
   }
-  const running = clockState?.running != null;
-  document.querySelector("#play-button").style.display =
-    !running && clockState?.clocks?.length > 0 ? "inline-block" : "none";
-  document.querySelector("#pause-button").style.display = running ? "inline-block" : "none";
+  const controls = document.querySelector("#controls");
+  if (clockState?.running != null) {
+    controls.replaceChildren(document.querySelector("#pause-button").content.cloneNode(true));
+  } else if (clockState?.clocks.length > 0) {
+    controls.replaceChildren(document.querySelector("#play-button").content.cloneNode(true));
+  } else {
+    controls.replaceChildren();
+  }
+  controls.appendChild(document.querySelector("#edit-button").content.cloneNode(true));
 };
 
 const createClock = ({ name, time, running, paused, click }) => {
