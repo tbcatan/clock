@@ -99,3 +99,7 @@ button {
     cursor: pointer;
   }
 }
+
+.clock-button {
+  min-width: 65px;
+}
