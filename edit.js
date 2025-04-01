@@ -35,7 +35,6 @@ function createNewClock(publishClockState) {
   const timeInput = document.querySelector("#time-input");
   const newClockState = getNewClockState(playerInput.innerText, timeInput.value);
   if (newClockState) {
-    publishClockState(newClockState);
-    stopEditing();
+    publishClockState(newClockState).then(stopEditing);
   }
 }
