@@ -63,6 +63,6 @@
   <script src="wake-lock.js"></script>
   <script>
     const clock = message("clock");
-    renderLoop(clock.state, clock.publish);
+    clock.init().then(() => renderLoop(clock.state, clock.publish));
   </script>
 </html>
