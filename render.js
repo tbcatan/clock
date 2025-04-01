@@ -38,7 +38,7 @@ const renderClocks = (clockState, publishClockState) => {
   } else {
     document.querySelector("#clocks").replaceChildren();
   }
-  const controls = document.querySelector("#controls");
+  const controls = document.querySelector("#clock-controls");
   if (clockState?.running != null) {
     controls.replaceChildren(document.querySelector("#pause-button").content.cloneNode(true));
   } else if (clockState?.clocks.length > 0) {

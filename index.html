@@ -12,7 +12,7 @@
     <div class="center">
       <div id="content">
         <div id="clocks"></div>
-        <div id="controls" class="controls"></div>
+        <div id="clock-controls" class="controls"></div>
       </div>
       <div id="edit"></div>
     </div>
@@ -49,8 +49,8 @@
         <input id="time-input"></input>
         <span>minutes per player</span>
       </div>
-      <div class="controls">
-        <button onclick="stopEditing()">Cancel</button>
+      <div id="create-clock-controls" class="controls">
+        <button id="cancel-create-clock" onclick="stopEditing()">Cancel</button>
         <button onclick="createNewClock(clock.publish)">Create New Clock</button>
       </div>
     </div>
@@ -63,6 +63,15 @@
   <script src="wake-lock.js"></script>
   <script>
     const clock = message("clock");
-    clock.init().then(() => renderLoop(clock.state, clock.publish));
+    clock.init().then(() => {
+      renderLoop(clock.state, clock.publish);
+      if (!clock.state()) {
+        openEditMenu((createClockMenu) => {
+          createClockMenu
+            .querySelector("#create-clock-controls")
+            .removeChild(createClockMenu.querySelector("#cancel-create-clock"));
+        });
+      }
+    });
   </script>
 </html>

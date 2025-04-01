@@ -1,6 +1,8 @@
-function openEditMenu() {
+function openEditMenu(modifyEditMenu) {
+  const createClock = document.querySelector("#create-clock").content.cloneNode(true);
+  modifyEditMenu?.(createClock);
   document.querySelector("#content").classList.add("hidden");
-  document.querySelector("#edit").replaceChildren(document.querySelector("#create-clock").content.cloneNode(true));
+  document.querySelector("#edit").replaceChildren(createClock);
 }
 
 function stopEditing() {
