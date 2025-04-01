@@ -113,6 +113,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  white-space: nowrap;
 }
 
 input {
