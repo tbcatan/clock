@@ -1,8 +1,9 @@
 const openEditMenu = (modifyEditMenu) => {
-  const createClock = document.querySelector("#create-clock").content.cloneNode(true);
-  modifyEditMenu?.(createClock);
+  const createClockMenu = document.querySelector("#create-clock").content.cloneNode(true);
+  modifyEditMenu?.(createClockMenu);
   document.querySelector("#content").classList.add("hidden");
-  document.querySelector("#edit").replaceChildren(createClock);
+  document.querySelector("#edit").replaceChildren(createClockMenu);
+  document.querySelector("#player-input").focus();
 };
 
 const stopEditing = () => {
