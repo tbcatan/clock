@@ -22,6 +22,10 @@ body {
   padding: 12px;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .center {
   display: flex;
   justify-content: center;
@@ -33,7 +37,7 @@ body {
   min-height: fit-content;
 }
 
-.content {
+#content {
   display: flex;
   flex-direction: column;
   gap: 36px;
@@ -77,10 +81,11 @@ body {
   }
 }
 
-#controls {
+.controls {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  gap: 6px;
 }
 
 button {
@@ -102,4 +107,49 @@ button {
 
 .clock-button {
   min-width: 65px;
+}
+
+.create-clock {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+input {
+  font-size: inherit;
+  font-family: inherit;
+
+  color: inherit;
+  background: none;
+
+  border: 1px solid white;
+  border-radius: 6px;
+
+  padding: 12px;
+}
+
+.player-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#player-input {
+  border: 1px solid white;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 0;
+  min-height: 136px;
+}
+
+.time-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+#time-input {
+  width: 65px;
+  text-align: center;
 }

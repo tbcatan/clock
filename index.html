@@ -10,10 +10,11 @@
   </head>
   <body>
     <div class="center">
-      <div class="content">
+      <div id="content">
         <div id="clocks"></div>
-        <div id="controls"></div>
+        <div id="controls" class="controls"></div>
       </div>
+      <div id="edit"></div>
     </div>
   </body>
   <template id="clock">
@@ -33,14 +34,32 @@
     </button>
   </template>
   <template id="edit-button">
-    <button class="clock-button">
+    <button class="clock-button" onclick="openEditMenu()">
       <i class="fa-solid fa-pen-to-square"></i>
     </button>
+  </template>
+  <template id="create-clock">
+    <div class="create-clock">
+      <div class="player-input">
+        <label for="player-input">Players:</label>
+        <div id="player-input" contenteditable></div>
+      </div>
+      <div class="time-input">
+        <label for="time-input">Time:</label>
+        <input id="time-input"></input>
+        <span>minutes per player</span>
+      </div>
+      <div class="controls">
+        <button onclick="stopEditing()">Cancel</button>
+        <button onclick="createNewClock(clock.publish)">Create New Clock</button>
+      </div>
+    </div>
   </template>
   <script src="utils.js"></script>
   <script src="messages.js"></script>
   <script src="controls.js"></script>
   <script src="render.js"></script>
+  <script src="edit.js"></script>
   <script src="wake-lock.js"></script>
   <script>
     const clock = message("clock");
