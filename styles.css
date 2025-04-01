@@ -37,6 +37,10 @@ body {
   min-height: fit-content;
 }
 
+#connecting {
+  text-align: center;
+}
+
 #content {
   display: flex;
   flex-direction: column;

@@ -6,8 +6,8 @@ const openEditMenu = (modifyEditMenu) => {
 };
 
 const stopEditing = () => {
-  document.querySelector("#content").classList.remove("hidden");
   document.querySelector("#edit").replaceChildren();
+  document.querySelector("#content").classList.remove("hidden");
 };
 
 const getNewClockState = (playerString, timeMinutes) => {
