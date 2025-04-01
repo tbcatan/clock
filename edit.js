@@ -3,7 +3,6 @@ const openEditMenu = (modifyEditMenu) => {
   modifyEditMenu?.(createClockMenu);
   document.querySelector("#content").classList.add("hidden");
   document.querySelector("#edit").replaceChildren(createClockMenu);
-  document.querySelector("#player-input").focus();
 };
 
 const stopEditing = () => {
