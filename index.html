@@ -8,15 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <script src="utils.js"></script>
-  <script src="messages.js"></script>
-  <script src="controls.js"></script>
-  <script src="render.js"></script>
-  <script src="wake-lock.js"></script>
-  <script>
-    const clock = message("clock");
-    renderLoop(clock.state, clock.publish);
-  </script>
   <body>
     <div class="center">
       <div class="content">
@@ -46,4 +37,13 @@
       <i class="fa-solid fa-pen-to-square"></i>
     </button>
   </template>
+  <script src="utils.js"></script>
+  <script src="messages.js"></script>
+  <script src="controls.js"></script>
+  <script src="render.js"></script>
+  <script src="wake-lock.js"></script>
+  <script>
+    const clock = message("clock");
+    renderLoop(clock.state, clock.publish);
+  </script>
 </html>
