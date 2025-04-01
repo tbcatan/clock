@@ -1,16 +1,9 @@
 let wakeLock;
-if (document.visibilityState === "visible") {
-  navigator.wakeLock.request("screen").then((screenWakeLock) => {
-    wakeLock = screenWakeLock;
-  });
-}
-document.addEventListener("visibilitychange", async () => {
+const acquireWakeLock = async () => {
   if (document.visibilityState === "visible" && (wakeLock == null || wakeLock.released)) {
     wakeLock = await navigator.wakeLock.request("screen");
   }
-});
-document.addEventListener("click", async () => {
-  if (document.visibilityState === "visible" && (wakeLock == null || wakeLock.released)) {
-    wakeLock = await navigator.wakeLock.request("screen");
-  }
-});
+};
+acquireWakeLock();
+document.addEventListener("visibilitychange", acquireWakeLock);
+document.addEventListener("click", acquireWakeLock);
