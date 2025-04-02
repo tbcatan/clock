@@ -58,24 +58,25 @@ body {
 }
 
 #clocks {
-  display: grid;
-  grid-template-columns: 1fr min-content;
-  row-gap: 24px;
-  column-gap: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 
-  width: 300px;
-  min-width: fit-content;
+  min-width: 300px;
 }
 
 .clock {
-  display: grid;
-  grid-template-columns: subgrid;
-  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 48px;
 
   border: 1px solid white;
   border-radius: 6px;
   padding: 18px 36px;
 
+  width: 100%;
+  min-width: fit-content;
   white-space: nowrap;
 }
 
@@ -89,10 +90,6 @@ body {
 
 .clock:hover {
   cursor: pointer;
-}
-
-.clock .time {
-  justify-self: end;
 }
 
 .controls {
