@@ -1,6 +1,9 @@
-const nextClock = (clockState) => {
+const nextClock = (clockState) =>
+  jumpToClock(clockState, (clockState.running != null && (clockState.running + 1) % clockState.clocks.length) || 0);
+
+const jumpToClock = (clockState, runningNext) => {
   clockState = updateClockState(clockState);
-  if (clockState.running != null) {
+  if (clockState.running != null && runningNext !== clockState.running) {
     const runningClock = clockState.clocks[clockState.running];
     if (runningClock?.time >= 0) {
       runningClock.time += clockState.increment || 0;
@@ -8,7 +11,7 @@ const nextClock = (clockState) => {
   }
   return {
     ...clockState,
-    running: (clockState.running != null && (clockState.running + 1) % clockState.clocks.length) || 0,
+    running: runningNext,
     paused: undefined,
   };
 };

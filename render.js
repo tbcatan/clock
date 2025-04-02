@@ -31,8 +31,16 @@ const renderClocks = (clockState, publishClockState) => {
         const paused = index === clockState.paused;
         const name = clock.name;
         const time = running ? runningClockTime(clock.time, clockState.timestamp) : clock.time;
-        const click = running ? () => publishClockState(nextClock(clockState)) : null;
-        return createClock({ name, time, running, paused, click });
+
+        const clockEl = createClock({ name, time, running, paused });
+        if (running) {
+          clockEl.addEventListener("click", () => publishClockState(nextClock(clockState)));
+        } else if (paused) {
+          clockEl.addEventListener("click", () => publishClockState(resumeClock(clockState)));
+        } else {
+          clockEl.addEventListener("click", () => publishClockState(jumpToClock(clockState, index)));
+        }
+        return clockEl;
       })
     );
   } else {
@@ -49,16 +57,13 @@ const renderClocks = (clockState, publishClockState) => {
   controls.appendChild(document.querySelector("#edit-button").content.cloneNode(true));
 };
 
-const createClock = ({ name, time, running, paused, click }) => {
+const createClock = ({ name, time, running, paused }) => {
   const clock = document.querySelector("#clock").content.cloneNode(true).querySelector(".clock");
   if (running) {
     clock.classList.add("running");
   }
   if (paused) {
     clock.classList.add("paused");
-  }
-  if (click) {
-    clock.addEventListener("click", click);
   }
   clock.querySelector(".name").textContent = name;
   clock.querySelector(".time").textContent = formatTime(time);
