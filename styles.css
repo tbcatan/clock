@@ -99,7 +99,7 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
 }
 
 button {
