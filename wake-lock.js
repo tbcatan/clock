@@ -1,7 +1,7 @@
 let wakeLock;
 const reacquireWakeLock = async () => {
   if (document.visibilityState === "visible" && (wakeLock == null || wakeLock.released)) {
-    wakeLock = await navigator.wakeLock.request("screen");
+    wakeLock = await navigator.wakeLock?.request("screen");
   }
 };
 reacquireWakeLock();
