@@ -143,6 +143,11 @@ input {
   padding: 12px;
 }
 
+input,
+*[contenteditable] {
+  outline: none;
+}
+
 .player-input {
   display: flex;
   flex-direction: column;
