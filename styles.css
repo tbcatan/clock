@@ -65,10 +65,6 @@ body {
 
   width: 300px;
   min-width: fit-content;
-
-  .clock .time {
-    justify-self: end;
-  }
 }
 
 .clock {
@@ -81,18 +77,22 @@ body {
   padding: 18px 36px;
 
   white-space: nowrap;
+}
 
-  &.paused {
-    background-color: goldenrod;
-  }
+.clock.paused {
+  background-color: goldenrod;
+}
 
-  &.running {
-    background-color: crimson;
-  }
+.clock.running {
+  background-color: crimson;
+}
 
-  &:hover {
-    cursor: pointer;
-  }
+.clock:hover {
+  cursor: pointer;
+}
+
+.clock .time {
+  justify-self: end;
 }
 
 .controls {
@@ -114,10 +114,10 @@ button {
   border-radius: 6px;
 
   padding: 12px 18px;
+}
 
-  &:hover {
-    cursor: pointer;
-  }
+button:hover {
+  cursor: pointer;
 }
 
 .clock-button {
@@ -155,10 +155,10 @@ input,
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
 
-  label {
-    align-self: center;
-  }
+.player-input label {
+  align-self: center;
 }
 
 #player-input {
@@ -178,10 +178,10 @@ input,
 
   width: fit-content;
   margin: 0 auto;
+}
 
-  label {
-    justify-self: end;
-  }
+.time-inputs label {
+  justify-self: end;
 }
 
 .time-input {
