@@ -169,14 +169,22 @@ input,
   min-height: 146px;
 }
 
-.time-input {
-  display: flex;
-  justify-content: center;
+.time-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, min-content);
   align-items: center;
-  gap: 12px;
+  column-gap: 12px;
+  row-gap: 24px;
+
+  width: fit-content;
+  margin: 0 auto;
+
+  label {
+    justify-self: end;
+  }
 }
 
-#time-input {
+.time-input {
   width: 66px;
   text-align: center;
 }

@@ -48,10 +48,13 @@
         <label for="player-input">Players:</label>
         <div id="player-input" contenteditable></div>
       </div>
-      <div class="time-input">
+      <div class="time-inputs">
         <label for="time-input">Time:</label>
-        <input id="time-input" inputmode="numeric" maxlength="3" value="30"></input>
+        <input id="time-input" class="time-input" inputmode="numeric" maxlength="3" value="30" />
         <span>minutes per player</span>
+        <label for="increment-input">Increment:</label>
+        <input id="increment-input" class="time-input" inputmode="numeric" maxlength="3" value="0" />
+        <span>seconds per turn</span>
       </div>
       <div id="create-clock-controls" class="controls">
         <button id="cancel-create-clock" onclick="stopEditing()">Cancel</button>
