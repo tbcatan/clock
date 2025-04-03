@@ -44,9 +44,12 @@ const renderClocks = (clockState, clockVersion, publishClockState) => {
           const jump = () => publishClockState(jumpToClock(clockState, index), clockVersion);
           clockEl.addEventListener("dblclick", jump);
           let touchTimeout;
-          clockEl.addEventListener("touchstart", () => {
+          clockEl.addEventListener("touchstart", (event) => {
+            event.preventDefault();
             clearTimeout(touchTimeout);
-            touchTimeout = setTimeout(jump, 500);
+            touchTimeout = setTimeout(() => {
+              jump();
+            }, 500);
           });
           clockEl.addEventListener("touchend", () => {
             clearTimeout(touchTimeout);
