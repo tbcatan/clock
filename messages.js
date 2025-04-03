@@ -99,8 +99,8 @@ const message = (() => {
       };
     };
 
-    const publish = async (data) => {
-      const nextVersion = version() + 1;
+    const publish = async (data, lockedVersion) => {
+      const nextVersion = (lockedVersion ?? version()) + 1;
       const response = await sendMessage(key, nextVersion, data);
       updateMessage(key, nextVersion, data);
       return response;

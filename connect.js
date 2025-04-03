@@ -14,7 +14,8 @@ clock.init().then(() => {
   document.querySelector("#connecting").classList.add("hidden");
   document.querySelector("#content").classList.remove("hidden");
 
-  renderLoop(clock.state, clock.publish);
+  renderLoop(clock.state, clock.version, clock.publish);
+
   if (!clock.state()) {
     openEditMenu((createClockMenu) => {
       createClockMenu

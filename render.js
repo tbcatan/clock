@@ -1,11 +1,14 @@
-const renderLoop = (getClockState, publishClockState) => {
+const renderLoop = (getClockState, getClockVersion, publishClockState) => {
   let clockState;
+  let clockVersion;
   let loop = () => {
     try {
       const newClockState = getClockState();
-      if (newClockState !== clockState) {
-        renderClocks(newClockState, publishClockState);
+      const newClockVersion = getClockVersion();
+      if (newClockState !== clockState || newClockVersion !== clockVersion) {
+        renderClocks(newClockState, newClockVersion, publishClockState);
         clockState = newClockState;
+        clockVersion = newClockVersion;
       } else if (clockState?.running != null) {
         document.querySelector("#clocks").children[clockState.running].querySelector(".time").textContent = formatTime(
           runningClockTime(clockState.clocks[clockState.running].time, clockState.timestamp)
@@ -23,7 +26,7 @@ const renderLoop = (getClockState, publishClockState) => {
   };
 };
 
-const renderClocks = (clockState, publishClockState) => {
+const renderClocks = (clockState, clockVersion, publishClockState) => {
   if (clockState) {
     document.querySelector("#clocks").replaceChildren(
       ...clockState.clocks.map((clock, index) => {
@@ -34,11 +37,11 @@ const renderClocks = (clockState, publishClockState) => {
 
         const clockEl = createClock({ name, time, running, paused });
         if (running) {
-          clockEl.addEventListener("click", () => publishClockState(nextClock(clockState)));
+          clockEl.addEventListener("click", () => publishClockState(nextClock(clockState), clockVersion));
         } else if (paused) {
-          clockEl.addEventListener("click", () => publishClockState(resumeClock(clockState)));
+          clockEl.addEventListener("click", () => publishClockState(resumeClock(clockState), clockVersion));
         } else {
-          clockEl.addEventListener("click", () => publishClockState(jumpToClock(clockState, index)));
+          clockEl.addEventListener("click", () => publishClockState(jumpToClock(clockState, index), clockVersion));
         }
         return clockEl;
       })
