@@ -19,3 +19,12 @@ const retry = (request, options) => {
     });
   return retryRequest();
 };
+
+const base64UrlSafeEncode = (uint8Array) => {
+  const string = String.fromCharCode(...uint8Array);
+  const base64 = btoa(string);
+  const base64UrlSafe = base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+  return base64UrlSafe;
+};
+
+const isBase64UrlSafe = (string) => /^[a-zA-Z0-9_\-]+$/.test(string);

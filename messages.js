@@ -53,7 +53,7 @@ const sendMessage = (key, version, message) =>
     }
   });
 
-const message = (() => {
+const [message, initMessages] = (() => {
   const messageStates = new Map();
   const messageVersions = new Map();
   const messageListeners = new Map();
@@ -79,40 +79,41 @@ const message = (() => {
     )
   );
 
-  return (key) => {
-    const state = () => messageStates.get(key) ?? null;
-    const version = () => messageVersions.get(key) ?? 0;
+  return [
+    (key) => {
+      const state = () => messageStates.get(key) ?? null;
+      const version = () => messageVersions.get(key) ?? 0;
 
-    const subscribe = (subscriber) => {
-      const listener = () => {
-        queueMicrotask(() => subscriber(state(), version()));
+      const subscribe = (subscriber) => {
+        const listener = () => {
+          queueMicrotask(() => subscriber(state(), version()));
+        };
+
+        if (!messageListeners.has(key)) {
+          messageListeners.set(key, new Set());
+        }
+        messageListeners.get(key).add(listener);
+        listener();
+
+        return {
+          unsubscribe: () => {
+            subscriber = () => {};
+            messageListeners.get(key).delete(listener);
+          },
+        };
       };
 
-      if (!messageListeners.has(key)) {
-        messageListeners.set(key, new Set());
-      }
-      messageListeners.get(key).add(listener);
-      listener();
-
-      return {
-        unsubscribe: () => {
-          subscriber = () => {};
-          messageListeners.get(key).delete(listener);
-        },
+      const publish = async (data, lockedVersion) => {
+        const nextVersion = (lockedVersion ?? version()) + 1;
+        const response = await sendMessage(key, nextVersion, data);
+        updateMessage(key, nextVersion, data);
+        return response;
       };
-    };
 
-    const publish = async (data, lockedVersion) => {
-      const nextVersion = (lockedVersion ?? version()) + 1;
-      const response = await sendMessage(key, nextVersion, data);
-      updateMessage(key, nextVersion, data);
-      return response;
-    };
-
-    const init = async () => {
+      return { key, state, version, subscribe, publish };
+    },
+    async () => {
       await initSnapshots;
-    };
-
-    return { key, state, version, subscribe, publish, init };
-  };
+    },
+  ];
 })();
