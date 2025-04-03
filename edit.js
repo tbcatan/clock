@@ -5,7 +5,7 @@ const openEditMenu = (modifyEditMenu) => {
   document.querySelector("#edit").replaceChildren(createClockMenu);
 };
 
-const stopEditing = () => {
+const closeEditMenu = () => {
   document.querySelector("#edit").replaceChildren();
   document.querySelector("#content").classList.remove("hidden");
 };
@@ -57,5 +57,5 @@ const createNewClock = async () => {
   await publishClockInstance;
 
   updateClockInstance(newClockInstance.key);
-  stopEditing();
+  closeEditMenu();
 };

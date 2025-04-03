@@ -34,7 +34,7 @@ initMessages().then(() => {
       clockSubscription = getClock(instance.key).subscribe((clockState) => {
         if (clockState?.clocks.length > 0) {
           updateClockInstance(instance.key);
-          stopEditing();
+          closeEditMenu();
           clockSubscription.unsubscribe();
           instanceSubscription.unsubscribe();
         }
