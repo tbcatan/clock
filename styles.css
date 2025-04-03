@@ -174,8 +174,7 @@ input,
   column-gap: 12px;
   row-gap: 24px;
 
-  width: fit-content;
-  margin: 0 auto;
+  align-self: center;
 }
 
 .time-inputs label {
