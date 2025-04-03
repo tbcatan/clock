@@ -95,7 +95,10 @@ const message = (() => {
       listener();
 
       return {
-        unsubscribe: () => messageListeners.get(key).delete(listener),
+        unsubscribe: () => {
+          subscriber = () => {};
+          messageListeners.get(key).delete(listener);
+        },
       };
     };
 
