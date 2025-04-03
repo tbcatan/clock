@@ -21,5 +21,11 @@ clock.init().then(() => {
         .querySelector("#create-clock-controls")
         .removeChild(createClockMenu.querySelector("#cancel-create-clock"));
     });
+    const subscription = clock.subscribe((clockState) => {
+      if (clockState?.clocks.length > 0) {
+        stopEditing();
+        subscription.unsubscribe();
+      }
+    });
   }
 });
