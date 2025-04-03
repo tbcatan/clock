@@ -41,7 +41,16 @@ const renderClocks = (clockState, clockVersion, publishClockState) => {
         } else if (paused) {
           clockEl.addEventListener("click", () => publishClockState(resumeClock(clockState), clockVersion));
         } else {
-          clockEl.addEventListener("click", () => publishClockState(jumpToClock(clockState, index), clockVersion));
+          const jump = () => publishClockState(jumpToClock(clockState, index), clockVersion);
+          clockEl.addEventListener("dblclick", jump);
+          let touchTimeout;
+          clockEl.addEventListener("touchstart", () => {
+            clearTimeout(touchTimeout);
+            touchTimeout = setTimeout(jump, 500);
+          });
+          clockEl.addEventListener("touchend", () => {
+            clearTimeout(touchTimeout);
+          });
         }
         return clockEl;
       })
