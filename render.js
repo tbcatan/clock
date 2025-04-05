@@ -29,6 +29,10 @@ const renderLoop = (getClockState, getClockVersion, publishClockState) => {
 };
 
 const renderClocks = (clockState, clockVersion, publishClockState) => {
+  const incrementInfo = createIncrementInfo(clockState?.increment);
+  const info = [incrementInfo].filter((el) => el);
+  const infoEl = info.length > 0 ? createElement("div", { class: "clock-info", children: info }) : null;
+
   const clocks = clockState?.clocks.map((clock, index) => {
     const running = index === clockState.running;
     const paused = index === clockState.paused;
@@ -68,7 +72,7 @@ const renderClocks = (clockState, clockVersion, publishClockState) => {
   controls.push(template("edit-button"));
   const controlsEl = createElement("div", { class: "controls", children: controls });
 
-  element("clock-state").replaceChildren(...[clocksEl, controlsEl].filter((el) => el));
+  element("clock-state").replaceChildren(...[infoEl, clocksEl, controlsEl].filter((el) => el));
 };
 
 const createClock = ({ name, time, running, paused }) => {
@@ -82,6 +86,20 @@ const createClock = ({ name, time, running, paused }) => {
   clock.querySelector(".name").textContent = name;
   clock.querySelector(".time").textContent = formatTime(time);
   return clock;
+};
+
+const createIncrementInfo = (increment) => {
+  if (!increment) {
+    return;
+  }
+  const incrementSeconds = increment / 1000;
+  if (!(incrementSeconds >= 0.5)) {
+    return;
+  }
+  const incrementString = incrementSeconds.toFixed(0);
+  const incrementInfo = template("increment-info");
+  element("increment-value", incrementInfo).textContent = incrementString;
+  return incrementInfo;
 };
 
 const runningClockTime = (time, asOfTimestamp) => {

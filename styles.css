@@ -60,6 +60,10 @@ body {
   min-width: 300px;
 }
 
+.clock-info {
+  text-align: center;
+}
+
 .clocks {
   display: flex;
   flex-direction: column;
