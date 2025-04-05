@@ -34,6 +34,7 @@ const getNewClockState = (playerString, timeMinutes, incrementSeconds) => {
 
   return {
     timestamp: Date.now(),
+    initialTime: timeMilliseconds,
     increment: incrementMilliseconds,
     clocks: players.map((name) => ({ name, time: timeMilliseconds })),
   };

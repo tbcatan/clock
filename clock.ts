@@ -1,6 +1,7 @@
 // clock state
 interface Clock {
   timestamp: number; // milliseconds since epoch
+  initialTime: number; // milliseconds
   increment: number; // milliseconds
   clocks: [
     {
