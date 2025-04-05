@@ -10,7 +10,9 @@ const renderLoop = (getClockState, getClockVersion, publishClockState) => {
         clockState = newClockState;
         clockVersion = newClockVersion;
       } else if (clockState?.running != null) {
-        document.querySelector("#clocks").children[clockState.running].querySelector(".time").textContent = formatTime(
+        element("clock-state")
+          .querySelector(".clocks")
+          .children[clockState.running].querySelector(".time").textContent = formatTime(
           runningClockTime(clockState.clocks[clockState.running].time, clockState.timestamp)
         );
       }
@@ -27,53 +29,50 @@ const renderLoop = (getClockState, getClockVersion, publishClockState) => {
 };
 
 const renderClocks = (clockState, clockVersion, publishClockState) => {
-  if (clockState) {
-    document.querySelector("#clocks").replaceChildren(
-      ...clockState.clocks.map((clock, index) => {
-        const running = index === clockState.running;
-        const paused = index === clockState.paused;
-        const name = clock.name;
-        const time = running ? runningClockTime(clock.time, clockState.timestamp) : clock.time;
+  const clocks = clockState?.clocks.map((clock, index) => {
+    const running = index === clockState.running;
+    const paused = index === clockState.paused;
+    const name = clock.name;
+    const time = running ? runningClockTime(clock.time, clockState.timestamp) : clock.time;
 
-        const clockEl = createClock({ name, time, running, paused });
-        if (running) {
-          clockEl.addEventListener("click", () => publishClockState(nextClock(clockState), clockVersion));
-        } else if (paused) {
-          clockEl.addEventListener("click", () => publishClockState(resumeClock(clockState), clockVersion));
-        } else {
-          const jump = () => publishClockState(jumpToClock(clockState, index), clockVersion);
-          clockEl.addEventListener("dblclick", jump);
-          let touchTimeout;
-          clockEl.addEventListener("touchstart", (event) => {
-            event.preventDefault();
-            clearTimeout(touchTimeout);
-            touchTimeout = setTimeout(() => {
-              jump();
-            }, 500);
-          });
-          clockEl.addEventListener("touchend", () => {
-            clearTimeout(touchTimeout);
-          });
-        }
-        return clockEl;
-      })
-    );
-  } else {
-    document.querySelector("#clocks").replaceChildren();
-  }
-  const controls = document.querySelector("#clock-controls");
+    const clockEl = createClock({ name, time, running, paused });
+    if (running) {
+      clockEl.addEventListener("click", () => publishClockState(nextClock(clockState), clockVersion));
+    } else if (paused) {
+      clockEl.addEventListener("click", () => publishClockState(resumeClock(clockState), clockVersion));
+    } else {
+      const jump = () => publishClockState(jumpToClock(clockState, index), clockVersion);
+      clockEl.addEventListener("dblclick", jump);
+      let touchTimeout;
+      clockEl.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        clearTimeout(touchTimeout);
+        touchTimeout = setTimeout(() => {
+          jump();
+        }, 500);
+      });
+      clockEl.addEventListener("touchend", () => {
+        clearTimeout(touchTimeout);
+      });
+    }
+    return clockEl;
+  });
+  const clocksEl = clocks?.length > 0 ? createElement("div", { class: "clocks", children: clocks }) : null;
+
+  const controls = [];
   if (clockState?.running != null) {
-    controls.replaceChildren(document.querySelector("#pause-button").content.cloneNode(true));
+    controls.push(template("pause-button"));
   } else if (clockState?.clocks.length > 0) {
-    controls.replaceChildren(document.querySelector("#play-button").content.cloneNode(true));
-  } else {
-    controls.replaceChildren();
+    controls.push(template("play-button"));
   }
-  controls.appendChild(document.querySelector("#edit-button").content.cloneNode(true));
+  controls.push(template("edit-button"));
+  const controlsEl = createElement("div", { class: "controls", children: controls });
+
+  element("clock-state").replaceChildren(...[clocksEl, controlsEl].filter((el) => el));
 };
 
 const createClock = ({ name, time, running, paused }) => {
-  const clock = document.querySelector("#clock").content.cloneNode(true).querySelector(".clock");
+  const clock = template("clock").querySelector(".clock");
   if (running) {
     clock.classList.add("running");
   }

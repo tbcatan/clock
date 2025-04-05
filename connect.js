@@ -4,21 +4,21 @@ let connected = false;
 
 sleep(250).then(() => {
   if (!connected) {
-    document.querySelector("#content").classList.add("hidden");
-    document.querySelector("#connecting").classList.remove("hidden");
+    element("connecting").classList.remove("hidden");
   }
 });
 
 initMessages().then(() => {
   connected = true;
-  document.querySelector("#connecting").classList.add("hidden");
-  document.querySelector("#content").classList.remove("hidden");
+  element("connecting").classList.add("hidden");
 
   renderLoop(clock.state, clock.version, clock.publish);
 
-  if (!clock.state()) {
+  if (clock.state()) {
+    element("clock-state").classList.remove("hidden");
+  } else {
     openEditMenu((createClockMenu) => {
-      createClockMenu.querySelector("#cancel-create-clock").remove();
+      element("cancel-create-clock", createClockMenu).remove();
     });
   }
 });

@@ -28,3 +28,24 @@ const base64UrlSafeEncode = (uint8Array) => {
 };
 
 const isBase64UrlSafe = (string) => /^[a-zA-Z0-9_\-]+$/.test(string);
+
+const element = (id, root) => (root ?? document).getElementById(id);
+
+const template = (id) => element(id)?.content.cloneNode(true);
+
+const createElement = (tag, options) => {
+  const newElement = document.createElement(tag);
+  if (options?.attributes) {
+    Object.entries(options.attributes).forEach(([key, value]) => newElement.setAttribute(key, value));
+  }
+  if (options?.id) {
+    newElement.setAttribute("id", options.id);
+  }
+  if (options?.class) {
+    newElement.setAttribute("class", options.class);
+  }
+  if (options?.children) {
+    newElement.append(...options.children);
+  }
+  return newElement;
+};

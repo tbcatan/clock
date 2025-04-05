@@ -1,13 +1,13 @@
 const openEditMenu = (modifyEditMenu) => {
-  const createClockMenu = document.querySelector("#create-clock").content.cloneNode(true);
+  const createClockMenu = template("create-clock");
   modifyEditMenu?.(createClockMenu);
-  document.querySelector("#content").classList.add("hidden");
-  document.querySelector("#edit").replaceChildren(createClockMenu);
+  element("clock-state").classList.add("hidden");
+  element("edit").replaceChildren(createClockMenu);
 };
 
 const closeEditMenu = () => {
-  document.querySelector("#edit").replaceChildren();
-  document.querySelector("#content").classList.remove("hidden");
+  element("edit").replaceChildren();
+  element("clock-state").classList.remove("hidden");
 };
 
 const getNewClockState = (playerString, timeMinutes, incrementSeconds) => {
@@ -40,11 +40,11 @@ const getNewClockState = (playerString, timeMinutes, incrementSeconds) => {
 };
 
 const createNewClock = (publishClockState) => {
-  const playerInput = document.querySelector("#player-input");
-  const timeInput = document.querySelector("#time-input");
-  const incrementInput = document.querySelector("#increment-input");
-
-  const newClockState = getNewClockState(playerInput.innerText, timeInput.value, incrementInput.value);
+  const newClockState = getNewClockState(
+    element("player-input").innerText,
+    element("time-input").value,
+    element("increment-input").value
+  );
   if (!newClockState) {
     return Promise.reject();
   }
