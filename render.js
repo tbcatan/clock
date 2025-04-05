@@ -96,9 +96,8 @@ const createIncrementInfo = (increment) => {
   if (!(incrementSeconds >= 0.5)) {
     return;
   }
-  const incrementString = incrementSeconds.toFixed(0);
-  const incrementInfo = template("increment-info");
-  element("increment-value", incrementInfo).textContent = incrementString;
+  const incrementInfo = createElement("div");
+  incrementInfo.textContent = `${incrementSeconds.toFixed(0)} second increment`;
   return incrementInfo;
 };
 
