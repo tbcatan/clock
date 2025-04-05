@@ -37,6 +37,7 @@ const getNewClockState = (playerString, timeMinutes, incrementSeconds) => {
     initialTime: timeMilliseconds,
     increment: incrementMilliseconds,
     clocks: players.map((name) => ({ name, time: timeMilliseconds })),
+    turn: 0,
   };
 };
 

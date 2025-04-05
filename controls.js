@@ -9,24 +9,30 @@ const jumpToClock = (clockState, runningNext) => {
       runningClock.time += clockState.increment || 0;
     }
   }
-  return {
-    ...clockState,
-    running: runningNext,
-    paused: undefined,
-  };
+  if (runningNext != null && runningNext !== clockState.running) {
+    clockState.turn += 1;
+  }
+  clockState.running = runningNext;
+  clockState.paused = undefined;
+  return clockState;
 };
 
-const pauseClock = (clockState) => ({
-  ...updateClockState(clockState),
-  running: undefined,
-  paused: clockState.running ?? clockState.paused,
-});
+const pauseClock = (clockState) => {
+  clockState = updateClockState(clockState);
+  clockState.paused = clockState.running ?? clockState.paused;
+  clockState.running = undefined;
+  return clockState;
+};
 
-const resumeClock = (clockState) => ({
-  ...updateClockState(clockState),
-  running: (clockState.running ?? clockState.paused) || 0,
-  paused: undefined,
-});
+const resumeClock = (clockState) => {
+  clockState = updateClockState(clockState);
+  if (clockState.running == null && clockState.paused == null) {
+    clockState.turn += 1;
+  }
+  clockState.running = (clockState.running ?? clockState.paused) || 0;
+  clockState.paused = undefined;
+  return clockState;
+};
 
 const updateClockState = (clockState) => {
   const newTimestamp = Math.max(Date.now(), clockState.timestamp);

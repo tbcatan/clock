@@ -11,4 +11,5 @@ interface Clock {
   ];
   running: number; // running clock index or null
   paused: number; // paused clock index or null - only used for highlight and selecting running clock on resume
+  turn: number;
 }

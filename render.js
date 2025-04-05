@@ -29,8 +29,9 @@ const renderLoop = (getClockState, getClockVersion, publishClockState) => {
 };
 
 const renderClocks = (clockState, clockVersion, publishClockState) => {
+  const turnInfo = createTurnInfo(clockState?.turn);
   const incrementInfo = createIncrementInfo(clockState?.increment);
-  const info = [incrementInfo].filter((el) => el);
+  const info = [turnInfo, incrementInfo].filter((el) => el);
   const infoEl = info.length > 0 ? createElement("div", { class: "clock-info", children: info }) : null;
 
   const clocks = clockState?.clocks.map((clock, index) => {
@@ -86,6 +87,15 @@ const createClock = ({ name, time, running, paused }) => {
   clock.querySelector(".name").textContent = name;
   clock.querySelector(".time").textContent = formatTime(time);
   return clock;
+};
+
+const createTurnInfo = (turn) => {
+  if (!turn) {
+    return;
+  }
+  const totalTurnsInfo = createElement("div");
+  totalTurnsInfo.textContent = `Turn ${turn}`;
+  return totalTurnsInfo;
 };
 
 const createIncrementInfo = (increment) => {
