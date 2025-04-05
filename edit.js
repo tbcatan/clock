@@ -39,7 +39,7 @@ const getNewClockState = (playerString, timeMinutes, incrementSeconds) => {
   };
 };
 
-const createNewClock = async () => {
+const createNewClock = (publishClockState) => {
   const playerInput = document.querySelector("#player-input");
   const timeInput = document.querySelector("#time-input");
   const incrementInput = document.querySelector("#increment-input");
@@ -48,14 +48,5 @@ const createNewClock = async () => {
   if (!newClockState) {
     return Promise.reject();
   }
-  const newClockInstance = { key: generateClockInstance(), created: Date.now() };
-
-  const publishClockState = getClock(newClockInstance.key).publish(newClockState);
-  const publishClockInstance = latestClockInstance.publish(newClockInstance);
-
-  await publishClockState;
-  await publishClockInstance;
-
-  updateClockInstance(newClockInstance.key);
-  closeEditMenu();
+  return publishClockState(newClockState).then(closeEditMenu);
 };
