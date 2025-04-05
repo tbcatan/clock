@@ -18,8 +18,7 @@ initMessages().then(() => {
 
   if (!clock.state()) {
     openEditMenu((createClockMenu) => {
-      const cancelButton = createClockMenu.querySelector("#cancel-create-clock");
-      cancelButton.parentElement.removeChild(cancelButton);
+      createClockMenu.querySelector("#cancel-create-clock").remove();
     });
   }
 });
