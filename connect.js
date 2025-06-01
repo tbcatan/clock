@@ -20,5 +20,11 @@ initMessages().then(() => {
     openEditMenu((createClockMenu) => {
       element("cancel-create-clock", createClockMenu).remove();
     });
+    const subscription = clock.subscribe((clockState) => {
+      if (clockState) {
+        closeEditMenu();
+        subscription.unsubscribe();
+      }
+    });
   }
 });
