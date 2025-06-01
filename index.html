@@ -35,7 +35,7 @@
     </button>
   </template>
   <template id="edit-button">
-    <button class="clock-button" onclick="openEditMenu()">
+    <button class="clock-button" onclick="openEditMenu(clock.version())">
       <i class="fa-solid fa-pen-to-square"></i>
     </button>
   </template>
@@ -54,8 +54,10 @@
         <span>seconds per turn</span>
       </div>
       <div id="create-clock-controls" class="controls">
-        <button id="cancel-create-clock" onclick="closeEditMenu()">Cancel</button>
-        <button id="submit-create-clock" onclick="createNewClock(clock.publish)">Create New Clock</button>
+        <button id="cancel-create-clock" onclick="closeEditMenu(clock.version())">Cancel</button>
+        <button id="submit-create-clock" onclick="createNewClock(clock.version(), clock.publish)">
+          Create New Clock
+        </button>
       </div>
     </div>
   </template>

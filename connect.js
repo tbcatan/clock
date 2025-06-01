@@ -17,12 +17,12 @@ initMessages().then(() => {
   if (clock.state()) {
     element("clock-state").classList.remove("hidden");
   } else {
-    openEditMenu((createClockMenu) => {
+    openEditMenu(clock.version(), (createClockMenu) => {
       element("cancel-create-clock", createClockMenu).remove();
     });
     const subscription = clock.subscribe((clockState) => {
       if (clockState) {
-        closeEditMenu();
+        closeEditMenu(clock.version());
         subscription.unsubscribe();
       }
     });
