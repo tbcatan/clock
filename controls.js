@@ -1,5 +1,8 @@
-const nextClock = (clockState) =>
-  jumpToClock(clockState, (clockState.running != null && (clockState.running + 1) % clockState.clocks.length) || 0);
+const nextClock = (clockState) => {
+  if (clockState.running != null) {
+    return jumpToClock(clockState, (clockState.running + 1) % clockState.clocks.length);
+  }
+};
 
 const jumpToClock = (clockState, runningNext) => {
   clockState = updateClockState(clockState);
@@ -26,10 +29,7 @@ const pauseClock = (clockState) => {
 
 const resumeClock = (clockState) => {
   clockState = updateClockState(clockState);
-  if (clockState.running == null && clockState.paused == null) {
-    clockState.turn += 1;
-  }
-  clockState.running = (clockState.running ?? clockState.paused) || 0;
+  clockState.running = clockState.running ?? clockState.paused;
   clockState.paused = undefined;
   return clockState;
 };

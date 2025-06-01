@@ -67,7 +67,7 @@ const renderClocks = (clockState, clockVersion, publishClockState) => {
   const controls = [];
   if (clockState?.running != null) {
     controls.push(template("pause-button"));
-  } else if (clockState?.clocks.length > 0) {
+  } else if (clockState?.paused != null) {
     controls.push(template("play-button"));
   }
   controls.push(template("edit-button"));
