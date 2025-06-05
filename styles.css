@@ -192,3 +192,10 @@ input,
   width: 66px;
   text-align: center;
 }
+
+.screen-lock {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 6px;
+}
