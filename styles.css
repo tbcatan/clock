@@ -199,3 +199,7 @@ input,
   right: 0;
   padding: 6px;
 }
+
+#screen-unlocked {
+  color: red;
+}
